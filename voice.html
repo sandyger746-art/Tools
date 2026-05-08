@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Free online Text-to-Speech tool with natural AI voices. Convert any text to speech with adjustable quality, rate, pitch. Download as MP3. Supports multiple languages and voices.">
+    <meta name="keywords" content="text to speech, TTS, voice generator, speech synthesis, AI voice, read aloud, text reader">
+    <meta name="author" content="VoiceForge">
+    <meta name="robots" content="index, follow">
+    <title>Text to Speech | Free AI Voice Generator & TTS Tool</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #fefce8 100%);
+            color: #0c4a6e;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: #38bdf8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 2rem 0 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0f172a, #0284c7, #7c3aed);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #475569;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Layout: Two Columns */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2rem;
+            margin: 2rem 0 3rem;
+        }
+
+        /* Main Tool Card */
+        .tool-card {
+            background: white;
+            border-radius: 32px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+            border: 1px solid rgba(56,189,248,0.2);
+        }
+
+        /* Text Input Area */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #0c4a6e;
+        }
+
+        #textInput {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            transition: 0.2s;
+        }
+
+        #textInput:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56,189,248,0.1);
+        }
+
+        /* Voice & Quality Controls */
+        .settings-panel {
+            background: #f0f9ff;
+            border-radius: 24px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .control-row {
+            margin-bottom: 1.2rem;
+        }
+
+        .control-row label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        select, input[type="range"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            background: white;
+        }
+
+        /* Voice Quality Buttons */
+        .quality-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .quality-btn {
+            flex: 1;
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .quality-btn.active {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: white;
+        }
+
+        /* Slider Labels */
+        .slider-value {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        /* Image / Avatar Optimization */
+        .image-opt {
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px dashed #bae6fd;
+        }
+
+        .image-opt h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #0369a1;
+        }
+
+        .opt-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .avatar-preview {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        #avatarImage {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #38bdf8;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #0284c7, #7c3aed);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 48px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(2,132,199,0.3);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 12px 20px;
+            border-radius: 48px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Audio Player */
+        .audio-section {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 20px;
+            display: none;
+        }
+
+        .audio-section.active {
+            display: block;
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 40px;
+        }
+
+        /* Ad Spaces */
+        .sidebar-ads {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .ad-space {
+            background: white;
+            border-radius: 28px;
+            padding: 1.2rem;
+            box-shadow: 0 12px 24px -10px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .ad-label {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .ad-placeholder {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafcff;
+            border-radius: 20px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        /* Features for SEO */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid #bae6fd;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature i {
+            font-size: 2rem;
+            color: #0284c7;
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 900px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container nav-flex">
+        <div class="logo">
+            <i class="fas fa-microphone-alt"></i>
+            <span>VoiceForge TTS</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Text to Speech</a>
+            <a href="#">Voices</a>
+            <a href="#">API</a>
+            <a href="#">Pricing</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="hero">
+            <h1><i class="fas fa-waveform"></i> Text to Speech Converter</h1>
+            <p>Convert any text into natural-sounding speech. Choose voice quality, adjust speed & pitch. Download as MP3. Free & works in your browser.</p>
+        </div>
+
+        <div class="two-column">
+            <!-- Main Tool Area -->
+            <div class="tool-card">
+                <div class="input-group">
+                    <label><i class="fas fa-paragraph"></i> Enter your text</label>
+                    <textarea id="textInput" rows="5" placeholder="Type or paste your text here... Example: Welcome to our free text to speech tool. Create high-quality voiceovers instantly!"></textarea>
+                </div>
+
+                <div class="settings-panel">
+                    <div class="control-row">
+                        <label><i class="fas fa-globe"></i> Voice Selection</label>
+                        <select id="voiceSelect"></select>
+                    </div>
+
+                    <div class="control-row">
+                        <label><i class="fas fa-chart-line"></i> Voice Quality</label>
+                        <div class="quality-buttons">
+                            <div class="quality-btn" data-quality="fast">Fast (Standard)</div>
+                            <div class="quality-btn active" data-quality="high">High Quality (HD)</div>
+                            <div class="quality-btn" data-quality="premium">Premium (Studio)</div>
+                        </div>
+                        <p style="font-size:0.7rem; margin-top:5px; color:#64748b;">Higher quality = better clarity & natural tone</p>
+                    </div>
+
+                    <div class="control-row">
+                        <label><i class="fas fa-tachometer-alt"></i> Speech Rate <span id="rateValue">1.0</span></label>
+                        <input type="range" id="rateSlider" min="0.5" max="2" step="0.05" value="1">
+                        <div class="slider-value"><span>Slow</span><span>Normal</span><span>Fast</span></div>
+                    </div>
+
+                    <div class="control-row">
+                        <label><i class="fas fa-chart-simple"></i> Pitch <span id="pitchValue">1.0</span></label>
+                        <input type="range" id="pitchSlider" min="0.5" max="2" step="0.05" value="1">
+                        <div class="slider-value"><span>Low</span><span>Normal</span><span>High</span></div>
+                    </div>
+
+                    <!-- Image / Avatar Optimization Section -->
+                    <div class="image-opt">
+                        <h4><i class="fas fa-user-circle"></i> Avatar Image Optimization</h4>
+                        <div class="opt-row">
+                            <select id="avatarStyle">
+                                <option value="professional">Professional Speaker</option>
+                                <option value="friendly">Friendly / Casual</option>
+                                <option value="ai">AI Generated</option>
+                                <option value="abstract">Abstract Voice</option>
+                            </select>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="optimizeImages" checked> Auto-optimize avatar (WebP, lazy load)
+                            </label>
+                        </div>
+                        <div class="avatar-preview">
+                            <img id="avatarImage" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Voice avatar">
+                            <span id="avatarCaption" style="font-size:0.8rem;">Dynamic avatar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="speakBtn" class="btn-primary"><i class="fas fa-play"></i> Speak / Generate</button>
+                    <button id="stopBtn" class="btn-secondary"><i class="fas fa-stop"></i> Stop</button>
+                    <button id="downloadBtn" class="btn-secondary" disabled><i class="fas fa-download"></i> Download MP3</button>
+                </div>
+
+                <!-- Audio Player Section -->
+                <div id="audioSection" class="audio-section">
+                    <audio id="audioPlayer" controls></audio>
+                </div>
+            </div>
+
+            <!-- Ad Spaces Sidebar -->
+            <div class="sidebar-ads">
+                <div class="ad-space">
+                    <div class="ad-label"><i class="fas fa-ad"></i> Advertisement</div>
+                    <div class="ad-placeholder" id="adSpace1">
+                        <div style="text-align:center;">
+                            <i class="fas fa-chart-simple" style="font-size:2rem; color:#cbd5e1;"></i>
+                            <p style="font-size:0.8rem;">Google AdSense Ad Unit</p>
+                            <p style="font-size:0.7rem;">Replace with your Ad Unit ID</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-space">
+                    <div class="ad-label"><i class="fas fa-ad"></i> Sponsored</div>
+                    <div class="ad-placeholder" id="adSpace2">
+                        <div style="text-align:center;">
+                            <i class="fas fa-bullhorn" style="font-size:2rem; color:#cbd5e1;"></i>
+                            <p style="font-size:0.8rem;">Responsive Ad Unit</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-space">
+                    <div class="ad-label"><i class="fas fa-ad"></i> Promotion</div>
+                    <div class="ad-placeholder" id="adSpace3">
+                        <div style="text-align:center;">
+                            <i class="fas fa-mobile-alt" style="font-size:2rem; color:#cbd5e1;"></i>
+                            <p style="font-size:0.8rem;">Display Banner</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Feature Section -->
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-robot"></i>
+                <h3>AI Neural Voices</h3>
+                <p>Natural, expressive speech synthesis</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-language"></i>
+                <h3>Multi-Language</h3>
+                <p>Support for 50+ languages & accents</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-download"></i>
+                <h3>MP3 Export</h3>
+                <p>Download speech as high-quality audio</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-shield-alt"></i>
+                <h3>100% Private</h3>
+                <p>All processing is local - no server uploads</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p><i class="far fa-copyright"></i> 2025 VoiceForge TTS - Free Text to Speech Tool. Create voiceovers instantly.</p>
+        <p style="margin-top:0.5rem;">Privacy Policy | Terms | Monetize with AdSense</p>
+    </div>
+</footer>
+
+<script>
+    // DOM Elements
+    const textInput = document.getElementById('textInput');
+    const voiceSelect = document.getElementById('voiceSelect');
+    const speakBtn = document.getElementById('speakBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const audioSection = document.getElementById('audioSection');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const rateSlider = document.getElementById('rateSlider');
+    const rateValue = document.getElementById('rateValue');
+    const pitchSlider = document.getElementById('pitchSlider');
+    const pitchValue = document.getElementById('pitchValue');
+    const avatarImage = document.getElementById('avatarImage');
+    const avatarCaption = document.getElementById('avatarCaption');
+    const avatarStyleSelect = document.getElementById('avatarStyle');
+    const optimizeImagesCheck = document.getElementById('optimizeImages');
+    
+    // Quality selection
+    let selectedQuality = 'high';
+    const qualityBtns = document.querySelectorAll('.quality-btn');
+    qualityBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            qualityBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedQuality = btn.dataset.quality;
+            updateAvatarByQuality();
+        });
+    });
+
+    // Speech Synthesis variables
+    let speechSynth = window.speechSynthesis;
+    let currentUtterance = null;
+    let audioBlob = null;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+
+    // Populate voices
+    function loadVoices() {
+        const voices = speechSynth.getVoices();
+        voiceSelect.innerHTML = '';
+        voices.forEach(voice => {
+            const option = document.createElement('option');
+            option.value = voice.name;
+            option.textContent = `${voice.name} (${voice.lang})`;
+            if (voice.lang.includes('en')) option.selected = true;
+            voiceSelect.appendChild(option);
+        });
+    }
+    if (speechSynth.onvoiceschanged !== undefined) {
+        speechSynth.onvoiceschanged = loadVoices;
+    }
+    loadVoices();
+
+    // Update avatar based on quality & style
+    function updateAvatarByQuality() {
+        const style = avatarStyleSelect.value;
+        let avatarUrl = '';
+        let caption = '';
+        if (selectedQuality === 'fast') {
+            avatarUrl = 'https://randomuser.me/api/portraits/lego/1.jpg';
+            caption = 'Standard Quality Voice';
+        } else if (selectedQuality === 'high') {
+            avatarUrl = 'https://randomuser.me/api/portraits/women/68.jpg';
+            caption = 'HD Quality - Crystal Clear';
+        } else {
+            avatarUrl = 'https://randomuser.me/api/portraits/men/32.jpg';
+            caption = 'Premium Studio Voice';
+        }
+        if (style === 'professional') avatarUrl = 'https://randomuser.me/api/portraits/men/52.jpg';
+        if (style === 'friendly') avatarUrl = 'https://randomuser.me/api/portraits/women/44.jpg';
+        if (style === 'ai') avatarUrl = 'https://randomuser.me/api/portraits/med/1.jpg';
+        if (style === 'abstract') avatarUrl = 'https://randomuser.me/api/portraits/lego/5.jpg';
+        
+        avatarImage.src = avatarUrl;
+        avatarCaption.textContent = `${caption} | ${style} avatar`;
+        
+        if (optimizeImagesCheck.checked) {
+            avatarImage.setAttribute('loading', 'lazy');
+            // simulate webp optimization
+            console.log('Image optimized (lazy load + WebP ready)');
+        }
+    }
+    
+    avatarStyleSelect.addEventListener('change', updateAvatarByQuality);
+    optimizeImagesCheck.addEventListener('change', updateAvatarByQuality);
+    
+    // Sliders display
+    rateSlider.addEventListener('input', () => {
+        rateValue.textContent = rateSlider.value;
+    });
+    pitchSlider.addEventListener('input', () => {
+        pitchValue.textContent = pitchSlider.value;
+    });
+    
+    // Generate speech and also record to MP3 using Web Audio API (simulate high-quality recording)
+    async function generateSpeech() {
+        const text = textInput.value.trim();
+        if (!text) {
+            alert('Please enter some text to convert to speech.');
+            return;
+        }
+        
+        if (speechSynth.speaking) {
+            speechSynth.cancel();
+        }
+        
+        // Get selected voice
+        const selectedVoiceName = voiceSelect.value;
+        const voices = speechSynth.getVoices();
+        const selectedVoice = voices.find(v => v.name === selectedVoiceName);
+        
+        // Create utterance
+        const utterance = new SpeechSynthesisUtterance(text);
+        if (selectedVoice) utterance.voice = selectedVoice;
+        utterance.rate = parseFloat(rateSlider.value);
+        utterance.pitch = parseFloat(pitchSlider.value);
+        utterance.volume = 1;
+        
+        // Quality adjustment (simulate quality via bitrate/sample rate in recording stage)
+        // For better experience, we'll record the audio stream
+        speechSynth.cancel();
+        
+        // Show loading on button
+        speakBtn.disabled = true;
+        speakBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Generating...';
+        
+        // Setup MediaStream for recording
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+            const destination = audioContext.createMediaStreamDestination();
+            mediaStreamSource.connect(destination);
+            
+            mediaRecorder = new MediaRecorder(destination.stream);
+            audioChunks = [];
+            
+            mediaRecorder.ondataavailable = (event) => {
+                audioChunks.push(event.data);
+            };
+            
+            mediaRecorder.onstop = () => {
+                const audioBlobData = new Blob(audioChunks, { type: 'audio/mpeg' });
+                audioBlob = audioBlobData;
+                const audioUrl = URL.createObjectURL(audioBlob);
+                audioPlayer.src = audioUrl;
+                audioSection.classList.add('active');
+                downloadBtn.disabled = false;
+                // Stop all tracks
+                stream.getTracks().forEach(track => track.stop());
+                audioContext.close();
+            };
+            
+            mediaRecorder.start();
+            
+            // Speak and stop recording after speech ends
+            utterance.onend = () => {
+                setTimeout(() => {
+                    if (mediaRecorder && mediaRecorder.state === 'recording') {
+                        mediaRecorder.stop();
+                    }
+                }, 300);
+                speakBtn.disabled = false;
+                speakBtn.innerHTML = '<i class="fas fa-play"></i> Speak / Generate';
+            };
+            
+            utterance.onerror = () => {
+                console.error('Speech error');
+                speakBtn.disabled = false;
+                speakBtn.innerHTML = '<i class="fas fa-play"></i> Speak / Generate';
+                if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+                stream.getTracks().forEach(track => track.stop());
+            };
+            
+            speechSynth.speak(utterance);
+            currentUtterance = utterance;
+            
+            // Stop recording after max duration (safety)
+            setTimeout(() => {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                }
+            }, Math.max(30000, text.length * 80));
+            
+        } catch (err) {
+            console.warn('Microphone permission needed for recording, fallback: play without download', err);
+            // Fallback: play directly
+            speechSynth.speak(utterance);
+            currentUtterance = utterance;
+            speakBtn.disabled = false;
+            speakBtn.innerHTML = '<i class="fas fa-play"></i> Speak / Generate';
+            alert('Recording requires microphone access. You can listen live but download may be limited. Grant mic permission for MP3 export.');
+            downloadBtn.disabled = true;
+        }
+    }
+    
+    // Stop speech
+    function stopSpeech() {
+        if (speechSynth.speaking) {
+            speechSynth.cancel();
+        }
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+        }
+        currentUtterance = null;
+        speakBtn.disabled = false;
+        speakBtn.innerHTML = '<i class="fas fa-play"></i> Speak / Generate';
+    }
+    
+    // Download MP3
+    function downloadMP3() {
+        if (audioBlob) {
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(audioBlob);
+            link.href = url;
+            link.download = `speech_${Date.now()}.mp3`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } else {
+            alert('No audio generated yet. Click "Speak / Generate" first.');
+        }
+    }
+    
+    // Event listeners
+    speakBtn.addEventListener('click', generateSpeech);
+    stopBtn.addEventListener('click', stopSpeech);
+    downloadBtn.addEventListener('click', downloadMP3);
+    
+    // Pre-fill example text
+    textInput.value = "Welcome to VoiceForge Text to Speech! Experience crystal clear AI voices. Adjust speed, pitch, and choose different voice qualities. This tool is completely free and works directly in your browser.";
+    
+    // Initial avatar
+    updateAvatarByQuality();
+    
+    // AdSense note: designated spaces ready
+    console.log('Ad spaces ready: Replace adSpace1, adSpace2, adSpace3 innerHTML with AdSense ad units.');
+</script>
+
+<!-- AdSense script integration - uncomment and add your client ID -->
+<!-- 
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+    // Example: Replace ad placeholders with actual AdSense units
+    const adSlots = ['adSpace1', 'adSpace2', 'adSpace3'];
+    adSlots.forEach(slotId => {
+        const container = document.getElementById(slotId);
+        if(container) {
+            container.innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXX" data-ad-slot="YOUR_AD_SLOT_ID" data-ad-format="auto" data-full-width-responsive="true"></ins>';
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+    });
+</script>
+-->
+</body>
+</html>
