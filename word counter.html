@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Professional word counter with real-time analytics: characters, sentences, readability, keyword density & more.">
+  <title>WordSmith Analytics | Pro Word Counter</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f9fafb;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      color: #111827;
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    /* modern sans-serif fallback */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* header section */
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+    .hero .tagline {
+      color: #6b7280;
+      font-size: 1rem;
+      font-weight: 400;
+      border-top: 1px solid #e5e7eb;
+      display: inline-block;
+      padding-top: 0.5rem;
+    }
+
+    /* input panel: top rounded card with horizontal alignment */
+    .input-panel {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      transition: box-shadow 0.2s ease;
+      border: 1px solid #eef2ff;
+    }
+    .input-wrapper {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .textarea-field {
+      flex: 1;
+      min-width: 200px;
+    }
+    .textarea-field label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #4b5563;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.3px;
+    }
+    textarea {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      font-size: 1rem;
+      font-family: 'Inter', monospace;
+      border: 1px solid #d1d5db;
+      border-radius: 20px;
+      background: #ffffff;
+      resize: vertical;
+      transition: all 0.2s;
+      line-height: 1.5;
+      color: #111827;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+    .action-buttons {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.85rem;
+      align-items: center;
+    }
+    .btn {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #1f2937;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px -8px rgba(37,99,235,0.4);
+    }
+    .btn-outline:hover {
+      background: #f3f4f6;
+      transform: translateY(-1px);
+      border-color: #94a3b8;
+    }
+    /* mobile: stack vertically */
+    @media (max-width: 680px) {
+      .input-wrapper {
+        flex-direction: column;
+      }
+      .action-buttons {
+        justify-content: flex-start;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* 2-column cards grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    /* card styling */
+    .card {
+      background: #ffffff;
+      border: 1px solid #e9edf2;
+      border-radius: 24px;
+      padding: 1.4rem 1.6rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+      transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.12);
+      border-color: #cbdffc;
+    }
+    .card-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #6b7280;
+      margin-bottom: 0.6rem;
+    }
+    .card-value {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    .sub-metric {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+      font-weight: 400;
+    }
+    .density-table {
+      width: 100%;
+      margin-top: 0.75rem;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .density-table th, .density-table td {
+      text-align: left;
+      padding: 0.5rem 0.2rem 0.3rem 0;
+      border-bottom: 1px solid #f0f2f5;
+    }
+    .density-table th {
+      font-weight: 600;
+      color: #374151;
+    }
+    .density-table td {
+      color: #4b5563;
+      font-weight: 500;
+    }
+    .badge-phrase {
+      background: #eff6ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #1e40af;
+      display: inline-block;
+    }
+    hr {
+      margin: 0.7rem 0;
+      border: 0;
+      height: 1px;
+      background: #edf2f7;
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 2rem;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 1.5rem;
+    }
+    @media (max-width: 700px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .card-value {
+        font-size: 2rem;
+      }
+    }
+    /* reading level extra highlight */
+    .readability-score {
+      display: inline-block;
+      background: #f0fdf4;
+      padding: 0.2rem 0.6rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #166534;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <h1>📊 WordSmith Analytics</h1>
+    <div class="tagline">Real‑time writing metrics · Readability · Keyword density · Pro insights</div>
+  </div>
+
+  <!-- Input area: top rounded card with horizontal layout -->
+  <div class="input-panel">
+    <div class="input-wrapper">
+      <div class="textarea-field">
+        <label for="textInput">✍️ Your text / article</label>
+        <textarea id="textInput" rows="6" placeholder="Paste or type your content here... The tool instantly analyzes word count, characters, reading time, and keyword density."></textarea>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-outline" id="clearBtn" aria-label="Clear all text">🗑️ Clear</button>
+        <button class="btn btn-outline" id="pasteBtn" aria-label="Paste from clipboard">📋 Paste</button>
+        <button class="btn btn-primary" id="sampleBtn" aria-label="Load example">✨ Example</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-column metrics grid (cards) -->
+  <div class="dashboard-grid">
+    <!-- Word & character block: use two cards? combine word + chars in one card but better separate clean -->
+    <div class="card">
+      <div class="card-label">📄 Total Words</div>
+      <div class="card-value" id="wordCount">0</div>
+      <div class="sub-metric">Unique words: <span id="uniqueWordCount">0</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">🔤 Characters</div>
+      <div class="card-value" id="charCount">0</div>
+      <div class="sub-metric">Without spaces: <span id="charNoSpaceCount">0</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">📖 Sentences</div>
+      <div class="card-value" id="sentenceCount">0</div>
+      <div class="sub-metric">Paragraphs: <span id="paragraphCount">0</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">⏱️ Time to Read</div>
+      <div class="card-value" id="readingTime">0 min</div>
+      <div class="sub-metric">Speaking time: <span id="speakingTime">0 min</span> (130 wpm)</div>
+    </div>
+    <div class="card">
+      <div class="card-label">🎓 Reading Level (Flesch-Kincaid)</div>
+      <div class="card-value" id="gradeLevel">—</div>
+      <div class="sub-metric">Ease score: <span id="readabilityScore">—</span> <span id="levelTag" class="readability-score"></span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">🏷️ Keyword Density (Top phrases)</div>
+      <div class="density-container">
+        <table class="density-table" id="keywordTable">
+          <thead>
+            <tr><th>1‑word</th><th>2‑word</th><th>3‑word</th></tr>
+          </thead>
+          <tbody>
+            <tr><td id="kw1">—</td><td id="kw2">—</td><td id="kw3">—</td></tr>
+          </tbody>
+        </table>
+        <div class="sub-metric" style="margin-top: 0.4rem;">*Stop words filtered (a, the, of, to, etc.)</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-note">
+    Instant live analysis — counts update as you type. Reading level uses Flesch-Kincaid grade level & ease score.
+  </div>
+</div>
+
+<script>
+  (function(){
+    // DOM elements
+    const textarea = document.getElementById('textInput');
+    const wordSpan = document.getElementById('wordCount');
+    const uniqueWordSpan = document.getElementById('uniqueWordCount');
+    const charSpan = document.getElementById('charCount');
+    const charNoSpaceSpan = document.getElementById('charNoSpaceCount');
+    const sentenceSpan = document.getElementById('sentenceCount');
+    const paragraphSpan = document.getElementById('paragraphCount');
+    const readingTimeSpan = document.getElementById('readingTime');
+    const speakingTimeSpan = document.getElementById('speakingTime');
+    const gradeLevelSpan = document.getElementById('gradeLevel');
+    const readabilityScoreSpan = document.getElementById('readabilityScore');
+    const levelTagSpan = document.getElementById('levelTag');
+    const kw1Span = document.getElementById('kw1');
+    const kw2Span = document.getElementById('kw2');
+    const kw3Span = document.getElementById('kw3');
+
+    // Helper functions: stop words list (common english)
+    const STOP_WORDS = new Set([
+      "a", "an", "and", "the", "of", "to", "in", "for", "on", "with", "by", "is", "are", "am", "was", "were",
+      "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "but", "or", "so",
+      "for", "nor", "yet", "at", "from", "into", "through", "during", "including", "without", "against", "among",
+      "this", "that", "these", "those", "it", "they", "we", "you", "he", "she", "it", "them", "us", "his", "her",
+      "its", "our", "their", "what", "which", "who", "whom", "whose", "will", "would", "can", "could", "should",
+      "may", "might", "must", "not", "very", "just", "but", "up", "down", "out", "off", "over", "under", "again",
+      "further", "then", "once", "here", "there", "all", "any", "both", "each", "few", "more", "most", "other",
+      "some", "such", "no", "nor", "only", "own", "same", "so", "than", "that", "then", "thence", "there", "these",
+      "they", "this", "those", "through", "very", "just", "don", "doesn", "didn", "isn", "aren", "wasn", "weren"
+    ]);
+    
+    // clean tokenization: lowercased, remove punctuation
+    function tokenizeWords(text) {
+      if (!text.trim()) return [];
+      // split by whitespace and punctuation boundaries, keep only alphabetic + apostrophes for contractions
+      let words = text.toLowerCase().match(/\b[a-z']+(?:'[a-z]+)?\b/g) || [];
+      return words.filter(w => w.length > 0);
+    }
+
+    // count sentences: split by ., !, ? plus abbreviations handling simple
+    function countSentences(text) {
+      if (!text.trim()) return 0;
+      // regex splitting on sentence-ending punctuation followed by whitespace or end of string
+      const sentences = text.match(/[^.!?]+[.!?]+/g);
+      if (!sentences) {
+        // if no punctuation but non-empty -> maybe one sentence
+        return text.trim().length > 0 ? 1 : 0;
+      }
+      return sentences.length;
+    }
+
+    // paragraphs: split by double newline or line break sequences
+    function countParagraphs(text) {
+      if (!text.trim()) return 0;
+      const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+      return paragraphs.length || (text.trim().length > 0 ? 1 : 0);
+    }
+
+    // Flesch-Kincaid Grade Level: 0.39*(words/sentences) + 11.8*(syllables/words) - 15.59
+    // also compute reading ease: 206.835 - 1.015*(words/sentences) - 84.6*(syllables/words)
+    // syllables estimation: heuristic count
+    function countSyllables(word) {
+      word = word.toLowerCase().replace(/[^a-z]/g, '');
+      if (word.length <= 3) return 1;
+      let syl = 0;
+      let prevWasVowel = false;
+      const vowels = "aeiouy";
+      for (let i = 0; i < word.length; i++) {
+        let isVowel = vowels.includes(word[i]);
+        if (isVowel && !prevWasVowel) syl++;
+        prevWasVowel = isVowel;
+      }
+      if (word.endsWith("e")) syl = Math.max(1, syl - 1);
+      return Math.max(1, syl);
+    }
+    
+    // compute readability metrics
+    function computeReadability(text, wordCount, sentenceCount) {
+      if (wordCount === 0 || sentenceCount === 0) {
+        return { grade: "N/A", ease: "N/A", levelDesc: "" };
+      }
+      const wordsArray = tokenizeWords(text);
+      let totalSyllables = 0;
+      for (let w of wordsArray) {
+        totalSyllables += countSyllables(w);
+      }
+      const avgWordsPerSentence = wordCount / sentenceCount;
+      const avgSyllablesPerWord = totalSyllables / wordCount;
+      // grade level
+      const grade = (0.39 * avgWordsPerSentence) + (11.8 * avgSyllablesPerWord) - 15.59;
+      const readingEase = 206.835 - (1.015 * avgWordsPerSentence) - (84.6 * avgSyllablesPerWord);
+      let gradeRounded = Math.max(0, Math.round(grade * 10) / 10);
+      let easeRounded = Math.min(100, Math.max(0, Math.round(readingEase)));
+      let levelDesc = "";
+      if (easeRounded >= 80) levelDesc = "Very Easy (5th grade)";
+      else if (easeRounded >= 70) levelDesc = "Easy (6th grade)";
+      else if (easeRounded >= 60) levelDesc = "Plain English (8th-9th)";
+      else if (easeRounded >= 50) levelDesc = "Fairly difficult (10th-12th)";
+      else if (easeRounded >= 30) levelDesc = "Difficult (College)";
+      else levelDesc = "Very Difficult (College graduate)";
+      return { grade: gradeRounded.toFixed(1), ease: easeRounded, levelDesc };
+    }
+
+    // get n-grams with stop words filtered (for unigrams, bigrams, trigrams)
+    function getFilteredNGrams(words, n, stopSet) {
+      if (words.length < n) return [];
+      let grams = [];
+      for (let i = 0; i <= words.length - n; i++) {
+        let gramArr = words.slice(i, i+n);
+        // For unigrams: filter out stop words
+        if (n === 1) {
+          if (stopSet.has(gramArr[0])) continue;
+          grams.push(gramArr[0]);
+        } else {
+          // For bigrams/trigrams: filter if ANY constituent word is a stop word? common readability: exclude if any stopword present
+          let containsStop = gramArr.some(w => stopSet.has(w));
+          if (!containsStop) {
+            grams.push(gramArr.join(' '));
+          }
+        }
+      }
+      return grams;
+    }
+
+    function getTopPhrases(words, n, topK = 3) {
+      if (!words.length) return [];
+      const ngrams = getFilteredNGrams(words, n, STOP_WORDS);
+      const freqMap = new Map();
+      for (let phrase of ngrams) {
+        freqMap.set(phrase, (freqMap.get(phrase) || 0) + 1);
+      }
+      const sorted = Array.from(freqMap.entries()).sort((a,b) => b[1] - a[1]);
+      return sorted.slice(0, topK).map(item => `${item[0]} (${item[1]})`);
+    }
+
+    // main update engine: compute all stats from raw text
+    function updateAllStats() {
+      const rawText = textarea.value;
+      const trimmedText = rawText;
+      // Words: tokenization
+      const wordsArray = tokenizeWords(trimmedText);
+      const wordCount = wordsArray.length;
+      const uniqueWords = new Set(wordsArray).size;
+      // character counts
+      const charCount = trimmedText.length;
+      const charNoSpace = trimmedText.replace(/\s/g, '').length;
+      // sentence & paragraphs
+      const sentenceCount = countSentences(trimmedText);
+      const paragraphCount = countParagraphs(trimmedText);
+      // reading / speaking times
+      const readingMinutes = wordCount / 200;
+      const speakingMinutes = wordCount / 130;
+      const readingTimeStr = readingMinutes < 1 ? '<1 min' : `${Math.ceil(readingMinutes)} min`;
+      const speakingTimeStr = speakingMinutes < 1 ? '<1 min' : `${Math.ceil(speakingMinutes)} min`;
+
+      // readability
+      const readability = computeReadability(trimmedText, wordCount, sentenceCount);
+      let gradeDisplay = readability.grade !== "N/A" ? `${readability.grade} grade` : "—";
+      let easeDisplay = readability.ease !== "N/A" ? readability.ease : "—";
+      let levelText = readability.levelDesc || "";
+
+      // keyword density top phrases
+      let topUnigrams = getTopPhrases(wordsArray, 1, 3);
+      let topBigrams = getTopPhrases(wordsArray, 2, 3);
+      let topTrigrams = getTopPhrases(wordsArray, 3, 3);
+      
+      const formatPhrase = (arr) => {
+        if (arr.length === 0) return "—";
+        return arr.join(', ');
+      };
+      
+      // update DOM
+      wordSpan.innerText = wordCount.toLocaleString();
+      uniqueWordSpan.innerText = uniqueWords.toLocaleString();
+      charSpan.innerText = charCount.toLocaleString();
+      charNoSpaceSpan.innerText = charNoSpace.toLocaleString();
+      sentenceSpan.innerText = sentenceCount;
+      paragraphSpan.innerText = paragraphCount;
+      readingTimeSpan.innerText = readingTimeStr;
+      speakingTimeSpan.innerText = speakingTimeStr;
+      gradeLevelSpan.innerText = gradeDisplay;
+      readabilityScoreSpan.innerText = easeDisplay !== "—" ? `${easeDisplay}/100` : "—";
+      levelTagSpan.innerText = levelText;
+      
+      // set table cells
+      kw1Span.innerText = formatPhrase(topUnigrams);
+      kw2Span.innerText = formatPhrase(topBigrams);
+      kw3Span.innerText = formatPhrase(topTrigrams);
+    }
+
+    // event binding + live update
+    textarea.addEventListener('input', function() {
+      updateAllStats();
+    });
+    
+    // clear button
+    const clearBtn = document.getElementById('clearBtn');
+    clearBtn.addEventListener('click', () => {
+      textarea.value = '';
+      updateAllStats();
+      textarea.focus();
+    });
+    
+    // paste button: read from clipboard
+    const pasteBtn = document.getElementById('pasteBtn');
+    pasteBtn.addEventListener('click', async () => {
+      try {
+        const clipboardText = await navigator.clipboard.readText();
+        textarea.value = clipboardText;
+        updateAllStats();
+        textarea.focus();
+      } catch (err) {
+        // fallback if permission denied
+        alert("Unable to access clipboard. Please paste manually (Ctrl+V).");
+      }
+    });
+    
+    // sample content for demo
+    const sampleBtn = document.getElementById('sampleBtn');
+    sampleBtn.addEventListener('click', () => {
+      const exampleText = `The future of artificial intelligence is both exciting and challenging. Many researchers believe that AI will revolutionize healthcare, transportation, and education. However, ethical frameworks must be developed carefully. For instance, algorithmic transparency can prevent bias in automated decisions. This new wave of innovation promises to augment human capabilities rather than replace them. An inclusive approach to technology design ensures broad access to benefits. In summary, thoughtful regulation and creative engineering will shape tomorrow's digital ecosystems.`;
+      textarea.value = exampleText;
+      updateAllStats();
+      textarea.focus();
+    });
+    
+    // initial update
+    updateAllStats();
+    
+    // optional: add ARIA attributes
+    textarea.setAttribute('aria-label', 'Text input for word counter analysis');
+    clearBtn.setAttribute('aria-label', 'Clear all text');
+    pasteBtn.setAttribute('aria-label', 'Paste text from clipboard');
+    sampleBtn.setAttribute('aria-label', 'Load example text');
+  })();
+</script>
+</body>
+</html>
