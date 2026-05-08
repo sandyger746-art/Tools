@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ToolForge | Ultimate Image & PDF Toolkit</title>
+    <!-- Google Fonts & Simple Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafc;
+            color: #1e293b;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* header/nav */
+        .navbar {
+            background: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(2px);
+            background: rgba(255,255,255,0.96);
+        }
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .logo i {
+            background: none;
+            color: #2563eb;
+            font-size: 1.9rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #334155;
+            transition: 0.2s;
+        }
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+        .btn-outline-light {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .btn-outline-light:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        /* hero */
+        .hero {
+            padding: 3rem 0 3rem 0;
+            text-align: center;
+            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #1e293b, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #475569;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 1.5rem;
+        }
+
+        /* tools grid - main section */
+        .tools-section {
+            padding: 4rem 0;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .section-sub {
+            text-align: center;
+            color: #4b5563;
+            max-width: 680px;
+            margin: 0 auto 3rem auto;
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .tool-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.7rem 1.5rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #eef2ff;
+            text-align: center;
+            cursor: pointer;
+        }
+        .tool-card:hover {
+            transform: translateY(-6px);
+            border-color: #cbdffc;
+            box-shadow: 0 24px 40px -12px rgba(37, 99, 235, 0.2);
+        }
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            background: #eef2ff;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            border-radius: 24px;
+            color: #2563eb;
+        }
+        .tool-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+        .tool-card p {
+            color: #5b6e8c;
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+        .tool-tag {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1f3a8a;
+        }
+
+        /* show case gallery for images/pdf preview */
+        .media-showcase {
+            background: #f8fafc;
+            padding: 3rem 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .showcase-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .showcase-header {
+            text-align: center;
+        }
+        .showcase-header h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .gallery-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px -6px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            aspect-ratio: 1 / 0.9;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.02);
+        }
+        .pdf-preview-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .pdf-card {
+            background: white;
+            width: 180px;
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .pdf-card i {
+            font-size: 3.5rem;
+            color: #dc2626;
+        }
+        .pdf-card p {
+            font-weight: 600;
+            margin: 0.6rem 0 0.2rem;
+        }
+        .pdf-card span {
+            font-size: 0.7rem;
+            color: #6c757d;
+        }
+        .pdf-card:hover {
+            transform: translateY(-4px);
+            background: #fff5f5;
+        }
+
+        /* cta & footer */
+        .cta {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(120deg, #eef2ff, #ffffff);
+            margin-top: 1rem;
+        }
+        .cta h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 1.2rem;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: scale(0.98);
+        }
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        /* responsive touches */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .nav-flex {
+                flex-direction: column;
+                text-align: center;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .tools-grid {
+                gap: 1.2rem;
+            }
+            .tool-card {
+                padding: 1.2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .gallery-item {
+                aspect-ratio: 1 / 0.9;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 18px;
+            }
+            .pdf-card {
+                width: 140px;
+            }
+        }
+
+        /* modal (lightbox) for images/pdf quick view */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 85%;
+            background: white;
+            border-radius: 28px;
+            overflow: auto;
+            padding: 1rem;
+            text-align: center;
+        }
+        .modal-content img {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 18px;
+        }
+        .modal-content iframe {
+            width: 80vw;
+            height: 70vh;
+            border: none;
+            border-radius: 20px;
+        }
+        .close-modal {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="container nav-flex">
+        <div class="logo">
+            <i class="fas fa-tools"></i>
+            <span>ToolForge</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Image Tools</a>
+            <a href="#">PDF Tools</a>
+            <a href="#">All Tools</a>
+            <a href="#" class="btn-outline-light"><i class="fas fa-user-plus"></i> Sign Up</a>
+        </div>
+    </div>
+</div>
+
+<header class="hero">
+    <div class="container">
+        <div class="hero-badge"><i class="fas fa-magic"></i> 40+ professional tools</div>
+        <h1>Image & PDF Powerhouse <br> For Creators & Pros</h1>
+        <p>Compress, convert, edit, merge — all your image and PDF needs in one blazing-fast toolkit. Free & secure.</p>
+    </div>
+</header>
+
+<!-- Main Tools Grid (Image & PDF focused) -->
+<section class="tools-section">
+    <div class="container">
+        <div class="section-title">⚙️ Essential Toolkit</div>
+        <div class="section-sub">Explore our most popular image and PDF utilities — designed for efficiency and quality.</div>
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-image"></i></div>
+                <h3>Image Compressor</h3>
+                <p>Reduce PNG, JPEG size up to 80% without losing quality.</p>
+                <span class="tool-tag"><i class="far fa-clock"></i> Instant</span>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-file-pdf"></i></div>
+                <h3>PDF Merger</h3>
+                <p>Combine multiple PDFs into one document in seconds.</p>
+                <span class="tool-tag"><i class="fas fa-layer-group"></i> Batch</span>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-crop-alt"></i></div>
+                <h3>Image Cropper</h3>
+                <p>Smart crop, resize & rotate images with preview.</p>
+                <span class="tool-tag"><i class="fas fa-edit"></i> Easy</span>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-file-alt"></i></div>
+                <h3>PDF to JPG</h3>
+                <p>Convert PDF pages to high-quality images.</p>
+                <span class="tool-tag"><i class="fas fa-exchange-alt"></i> Fast</span>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-watermark"></i></div>
+                <h3>Add Watermark</h3>
+                <p>Protect your images with text or logo watermark.</p>
+                <span class="tool-tag"><i class="fas fa-shield-alt"></i> Secure</span>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-lock"></i></div>
+                <h3>PDF Encrypt</h3>
+                <p>Add password protection to sensitive PDFs.</p>
+                <span class="tool-tag"><i class="fas fa-key"></i> Privacy</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Showcase: Lots of Images + PDF previews -->
+<section class="media-showcase">
+    <div class="container showcase-inner">
+        <div class="showcase-header">
+            <h2><i class="fas fa-images"></i> Visual Gallery & PDF Demos</h2>
+            <p style="margin-top: 8px;">Click any image or PDF card to explore — sample content preview</p>
+        </div>
+
+        <!-- image gallery grid (Lots of images) -->
+        <div class="image-gallery" id="imageGallery">
+            <!-- images will be injected dynamically via js for variety -->
+        </div>
+
+        <!-- pdf sample cards (lots of PDF preview style) -->
+        <div style="margin-top: 2rem;">
+            <h3 style="margin-bottom: 1rem;"><i class="fas fa-file-pdf"></i> Popular PDF Tools Preview</h3>
+            <div class="pdf-preview-area" id="pdfGallery">
+                <!-- sample pdf cards -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- call to action -->
+<div class="cta">
+    <div class="container">
+        <h3>Ready to supercharge your workflow?</h3>
+        <p>All tools are 100% free, no registration required. Start editing now.</p>
+        <button class="btn-primary" id="exploreCtaBtn"><i class="fas fa-rocket"></i> Explore All Tools</button>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p><i class="far fa-copyright"></i> 2025 ToolForge — Ultimate Image & PDF Toolkit. Built for creators.</p>
+        <p style="margin-top: 0.5rem;">Instant processing · Privacy first · No file storage</p>
+    </div>
+</footer>
+
+<!-- Modal lightbox for images / pdf viewer -->
+<div id="mediaModal" class="modal">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+    // ----------------------------------------------
+    // Generate lots of demo images (unsplash placeholders)
+    // using high-quality placeholder images for variety - free, fast, reliable
+    const imageList = [
+        "https://picsum.photos/id/1015/400/300",   // landscape
+        "https://picsum.photos/id/104/400/300",   // dog
+        "https://picsum.photos/id/106/400/300",   // flower
+        "https://picsum.photos/id/13/400/300",    // waterfall
+        "https://picsum.photos/id/169/400/300",   // sun
+        "https://picsum.photos/id/155/400/300",   // architecture
+        "https://picsum.photos/id/22/400/300",    // blur bird
+        "https://picsum.photos/id/26/400/300",    // venice
+        "https://picsum.photos/id/28/400/300",    // river
+        "https://picsum.photos/id/36/400/300",    // statue
+        "https://picsum.photos/id/42/400/300",    // piano
+        "https://picsum.photos/id/58/400/300"     // zebra
+    ];
+
+    // PDF demo documents (using sample PDF from web for preview — these are safe placeholder urls)
+    // For actual preview, use open pdf test files like sample pdf from Adobe
+    const pdfSamples = [
+        { name: "User Guide: Compress PDF", icon: "fas fa-file-pdf", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+        { name: "Image Tips Guide", icon: "fas fa-file-pdf", url: "https://www.africau.edu/images/default/sample.pdf" },
+        { name: "PDF Merging 101", icon: "fas fa-file-alt", url: "https://www.clickdimensions.com/links/TestPDFfile.pdf" },
+        { name: "Watermark Essentials", icon: "fas fa-file-pdf", url: "https://www.orimi.com/pdf-test.pdf" },
+        { name: "Convert JPG to PDF", icon: "fas fa-file-image", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" }
+    ];
+
+    // Build image gallery
+    const galleryContainer = document.getElementById('imageGallery');
+    function buildImageGallery() {
+        // we want at least 9-12 images for "lots of images"
+        let imagesHtml = '';
+        // creating extra duplicates with different ids but same or variety? we have up to 12 unique
+        // We'll also add 4 more from picsum for better density (total 12)
+        const extraImages = [
+            "https://picsum.photos/id/20/400/300", "https://picsum.photos/id/39/400/300",
+            "https://picsum.photos/id/96/400/300", "https://picsum.photos/id/15/400/300"
+        ];
+        const allImages = [...imageList, ...extraImages];
+        allImages.forEach((imgUrl, idx) => {
+            imagesHtml += `
+                <div class="gallery-item" data-type="image" data-src="${imgUrl}">
+                    <img src="${imgUrl}" alt="Tool gallery sample ${idx+1}" loading="lazy">
+                </div>
+            `;
+        });
+        galleryContainer.innerHTML = imagesHtml;
+    }
+
+    // Build PDF preview cards
+    const pdfContainer = document.getElementById('pdfGallery');
+    function buildPdfGallery() {
+        let pdfHtml = '';
+        pdfSamples.forEach((pdf, idx) => {
+            pdfHtml += `
+                <div class="pdf-card" data-type="pdf" data-url="${pdf.url}" data-name="${pdf.name}">
+                    <i class="${pdf.icon}"></i>
+                    <p>${pdf.name}</p>
+                    <span>Sample PDF</span>
+                </div>
+            `;
+        });
+        // add extra "placeholder" PDF-like cards to make it abundant
+        const extraPdf = [
+            { name: "Image Compression Report", icon: "fas fa-chart-line", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { name: "Guide to PDF/A", icon: "fas fa-archive", url: "https://www.orimi.com/pdf-test.pdf" }
+        ];
+        extraPdf.forEach(p => {
+            pdfHtml += `
+                <div class="pdf-card" data-type="pdf" data-url="${p.url}" data-name="${p.name}">
+                    <i class="${p.icon}"></i>
+                    <p>${p.name}</p>
+                    <span>Preview</span>
+                </div>
+            `;
+        });
+        pdfContainer.innerHTML = pdfHtml;
+    }
+
+    // Modal logic for viewing images or PDFs
+    const modal = document.getElementById('mediaModal');
+    const modalContentDiv = document.getElementById('modalContent');
+    const closeModalSpan = document.querySelector('.close-modal');
+
+    function showImageModal(imageSrc) {
+        modalContentDiv.innerHTML = `<img src="${imageSrc}" alt="Enlarged view" style="max-width:100%; border-radius: 1rem;">`;
+        modal.style.display = 'flex';
+    }
+
+    function showPdfModal(pdfUrl, fileName) {
+        // display embedded pdf viewer using iframe with google docs viewer for better cross-device?
+        // fallback to direct iframe
+        modalContentDiv.innerHTML = `
+            <div style="text-align:center; margin-bottom:1rem;">
+                <strong style="font-size:1.2rem;"><i class="fas fa-file-pdf"></i> ${fileName}</strong>
+            </div>
+            <iframe src="${pdfUrl}" title="PDF Preview"></iframe>
+            <p style="margin-top:12px;font-size:0.8rem; color:#475569;">📄 Sample preview — full tool allows editing, merging & conversion.</p>
+        `;
+        modal.style.display = 'flex';
+    }
+
+    // Attach event listeners after dynamic generation (delegation)
+    function bindMediaEvents() {
+        // image gallery items
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.removeEventListener('click', imageHandler);
+            item.addEventListener('click', imageHandler);
+        });
+        function imageHandler(e) {
+            const imgSrc = item.getAttribute('data-src');
+            if(imgSrc) showImageModal(imgSrc);
+            else {
+                const actualImg = item.querySelector('img');
+                if(actualImg) showImageModal(actualImg.src);
+            }
+        }
+        // pdf cards
+        document.querySelectorAll('.pdf-card').forEach(card => {
+            card.removeEventListener('click', pdfHandler);
+            card.addEventListener('click', pdfHandler);
+        });
+        function pdfHandler(e) {
+            const url = card.getAttribute('data-url');
+            const name = card.getAttribute('data-name') || 'PDF Document';
+            if(url) showPdfModal(url, name);
+        }
+    }
+
+    // we have to reassign after each rebuild, but we build once at load
+    function initPage() {
+        buildImageGallery();
+        buildPdfGallery();
+        // after building, re-bind event listeners (use slight delay to ensure DOM)
+        setTimeout(() => {
+            attachDelegatedEvents();
+        }, 20);
+    }
+
+    function attachDelegatedEvents() {
+        // using event delegation on parent containers
+        const galleryParent = document.getElementById('imageGallery');
+        const pdfParent = document.getElementById('pdfGallery');
+        
+        if(galleryParent) {
+            galleryParent.addEventListener('click', (e) => {
+                let target = e.target.closest('.gallery-item');
+                if(target) {
+                    let imgSrc = target.getAttribute('data-src');
+                    if(!imgSrc) {
+                        let imgTag = target.querySelector('img');
+                        if(imgTag) imgSrc = imgTag.src;
+                    }
+                    if(imgSrc) showImageModal(imgSrc);
+                }
+            });
+        }
+        if(pdfParent) {
+            pdfParent.addEventListener('click', (e) => {
+                let card = e.target.closest('.pdf-card');
+                if(card) {
+                    let url = card.getAttribute('data-url');
+                    let name = card.getAttribute('data-name') || 'PDF Sample';
+                    if(url) showPdfModal(url, name);
+                }
+            });
+        }
+    }
+
+    // close modal
+    if(closeModalSpan) {
+        closeModalSpan.addEventListener('click', () => {
+            modal.style.display = 'none';
+            modalContentDiv.innerHTML = '';
+        });
+    }
+    window.addEventListener('click', (e) => {
+        if(e.target === modal) {
+            modal.style.display = 'none';
+            modalContentDiv.innerHTML = '';
+        }
+    });
+
+    // CTA button simple demo alert
+    const ctaBtn = document.getElementById('exploreCtaBtn');
+    if(ctaBtn) {
+        ctaBtn.addEventListener('click', () => {
+            alert("✨ All tools are under active development — soon you'll be able to compress, convert, merge, edit images and PDFs right here! 🚀");
+        });
+    }
+
+    // Tool cards interactive (small demo)
+    const toolCards = document.querySelectorAll('.tool-card');
+    toolCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const title = card.querySelector('h3')?.innerText || 'Tool';
+            alert(`🔧 ${title} — This feature is coming soon! Stay tuned.`);
+        });
+    });
+
+    initPage();
+</script>
+</body>
+</html>
