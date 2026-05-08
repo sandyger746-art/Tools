@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Free online image resizer tool. Resize images by percentage or custom dimensions. Optimize JPEG and PNG images for web, social media, and email. Fast, secure, and 100% browser-based.">
+    <meta name="keywords" content="image resizer, resize image online, free image resizer, photo resizer, resize jpg, resize png, image optimizer">
+    <meta name="author" content="ToolHub">
+    <meta name="robots" content="index, follow">
+    <title>Image Resizer Tool | Free & Fast Online Photo Resizer</title>
+    
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+            color: #1e293b;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Responsive Container */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: #3b82f6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 2.5rem 0 1.5rem 0;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e293b, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #475569;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Two Column Layout for Tool + Ads */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin: 2rem 0 3rem;
+        }
+
+        /* Main Tool Card */
+        .tool-card {
+            background: white;
+            border-radius: 32px;
+            padding: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(59,130,246,0.15);
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafcff;
+        }
+
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .upload-area i {
+            font-size: 3.5rem;
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            color: #64748b;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .preview-box {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .preview-box h3 {
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            color: #475569;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .file-info {
+            margin-top: 0.8rem;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Size Controls */
+        .size-controls {
+            margin: 1.8rem 0;
+            padding: 1.2rem;
+            background: #f1f5f9;
+            border-radius: 24px;
+        }
+
+        .control-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .resize-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .resize-btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .resize-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .dimension-inputs {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .dimension-inputs input {
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            width: 120px;
+            font-size: 0.9rem;
+        }
+
+        .dimension-inputs span {
+            font-weight: 600;
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 0.8rem;
+        }
+
+        .preset {
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+
+        .preset:hover {
+            background: #cbd5e1;
+        }
+
+        /* Download Button */
+        .download-btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .download-btn:hover {
+            transform: scale(0.98);
+            box-shadow: 0 8px 20px rgba(59,130,246,0.3);
+        }
+
+        .download-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* Ad Spaces */
+        .ad-space {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .ad-label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .ad-placeholder {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .ad-placeholder-inner {
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .ad-placeholder-inner i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Sidebar Ads Stack */
+        .sidebar-ads {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Features Section (SEO) */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .feature-item {
+            text-align: center;
+        }
+
+        .feature-item i {
+            font-size: 2.5rem;
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-ads {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+            .preview-section {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .container {
+                padding: 0 16px;
+            }
+            .tool-card {
+                padding: 1.2rem;
+            }
+            .dimension-inputs input {
+                width: 90px;
+            }
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container nav-flex">
+        <div class="logo">
+            <i class="fas fa-expand-alt"></i>
+            <span>PixelResize</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Image Tools</a>
+            <a href="#">Resizer</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="hero">
+            <h1>Free Image Resizer Tool</h1>
+            <p>Resize images instantly by percentage, custom dimensions, or popular presets. Optimize for web, social media, and more. 100% free, secure & browser-based.</p>
+        </div>
+
+        <div class="two-column">
+            <!-- Main Tool Column -->
+            <div class="tool-card">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p><strong>Click or drag & drop</strong> an image here</p>
+                    <p style="font-size: 0.8rem; margin-top: 8px;">Supports JPG, PNG, WEBP (Max 15MB)</p>
+                    <input type="file" id="imageInput" accept="image/jpeg, image/png, image/webp">
+                </div>
+
+                <!-- Preview Section -->
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-box">
+                        <h3><i class="fas fa-image"></i> Original</h3>
+                        <img id="originalPreview" alt="Original preview">
+                        <div class="file-info" id="originalInfo"></div>
+                    </div>
+                    <div class="preview-box">
+                        <h3><i class="fas fa-arrows-alt"></i> Resized</h3>
+                        <img id="resizedPreview" alt="Resized preview">
+                        <div class="file-info" id="resizedInfo"></div>
+                    </div>
+                </div>
+
+                <!-- Size Control Panel -->
+                <div class="size-controls" id="sizeControls" style="display: none;">
+                    <div class="control-group">
+                        <label><i class="fas fa-sliders-h"></i> Resize Method</label>
+                        <div class="resize-options">
+                            <button class="resize-btn active" data-mode="percentage">Percentage %</button>
+                            <button class="resize-btn" data-mode="exact">Exact Dimensions</button>
+                        </div>
+                    </div>
+
+                    <!-- Percentage Controls -->
+                    <div id="percentageControls">
+                        <div class="control-group">
+                            <label>Resize Percentage</label>
+                            <input type="range" id="percentageSlider" min="10" max="200" value="100" step="5" style="width: 100%;">
+                            <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                                <span>10%</span>
+                                <span><strong id="percentageValue">100</strong>%</span>
+                                <span>200%</span>
+                            </div>
+                        </div>
+                        <div class="preset-buttons">
+                            <button class="preset" data-percent="25">25%</button>
+                            <button class="preset" data-percent="50">50%</button>
+                            <button class="preset" data-percent="75">75%</button>
+                            <button class="preset" data-percent="100">100%</button>
+                            <button class="preset" data-percent="150">150%</button>
+                        </div>
+                    </div>
+
+                    <!-- Exact Dimensions Controls (hidden initially) -->
+                    <div id="exactControls" style="display: none;">
+                        <div class="control-group">
+                            <label>Custom Dimensions (px)</label>
+                            <div class="dimension-inputs">
+                                <input type="number" id="widthInput" placeholder="Width" min="1" step="1">
+                                <span>x</span>
+                                <input type="number" id="heightInput" placeholder="Height" min="1" step="1">
+                                <button id="applyDimensions" class="preset" style="background:#3b82f6; color:white;">Apply</button>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>Preset Sizes</label>
+                            <div class="preset-buttons">
+                                <button class="preset" data-width="1920" data-height="1080">1920x1080 (HD)</button>
+                                <button class="preset" data-width="1280" data-height="720">1280x720 (720p)</button>
+                                <button class="preset" data-width="800" data-height="600">800x600</button>
+                                <button class="preset" data-width="500" data-height="500">500x500 (Square)</button>
+                                <button class="preset" data-width="300" data-height="250">300x250 (Ad)</button>
+                                <button class="preset" data-width="150" data-height="150">150x150 (Avatar)</button>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.75rem; color: #64748b; margin-top: 8px;">Keep aspect ratio: width & height will maintain proportions if only one is changed.</p>
+                    </div>
+                </div>
+
+                <button id="downloadBtn" class="download-btn" disabled>Resize & Download <i class="fas fa-download"></i></button>
+            </div>
+
+            <!-- Sidebar Ad Spaces -->
+            <div class="sidebar-ads">
+                <!-- Ad Space 1 - Top -->
+                <div class="ad-space">
+                    <div class="ad-label"><i class="fas fa-ad"></i> Advertisement</div>
+                    <div class="ad-placeholder" id="adSpace1">
+                        <div class="ad-placeholder-inner">
+                            <i class="fas fa-chart-line"></i>
+                            <p style="font-size: 0.8rem;">Google AdSense Ad Unit</p>
+                            <p style="font-size: 0.7rem;">Replace with your AdSense code</p>
+                        </div>
+                    </div>
+                    <!-- AdSense Integration: Insert your AdSense ad code inside this div -->
+                    <!-- 
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+                             data-ad-slot="YOUR_AD_SLOT_ID"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    -->
+                </div>
+
+                <!-- Ad Space 2 - Middle -->
+                <div class="ad-space">
+                    <div class="ad-label"><i class="fas fa-ad"></i> Sponsored</div>
+                    <div class="ad-placeholder" id="adSpace2">
+                        <div class="ad-placeholder-inner">
+                            <i class="fas fa-bullhorn"></i>
+                            <p style="font-size: 0.8rem;">AdSense Display Ad</p>
+                            <p style="font-size: 0.7rem;">Replace with your Ad Unit ID</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ad Space 3 - Bottom (responsive) -->
+                <div class="ad-space">
+                    <div class="ad-label"><i class="fas fa-ad"></i> Promotion</div>
+                    <div class="ad-placeholder" id="adSpace3">
+                        <div class="ad-placeholder-inner">
+                            <i class="fas fa-mobile-alt"></i>
+                            <p style="font-size: 0.8rem;">Responsive Ad Unit</p>
+                            <p style="font-size: 0.7rem;">Insert AdSense code here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Row for SEO -->
+        <div class="features">
+            <div class="feature-item">
+                <i class="fas fa-bolt"></i>
+                <h3>Lightning Fast</h3>
+                <p>Resize images instantly in your browser - no upload to server.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-lock"></i>
+                <h3>100% Private & Secure</h3>
+                <p>All processing happens locally. Your images never leave your device.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-chart-line"></i>
+                <h3>SEO Optimized</h3>
+                <p>Fast loading, responsive design, and semantic HTML for better rankings.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-file-image"></i>
+                <h3>Multiple Formats</h3>
+                <p>Supports JPEG, PNG, WEBP with automatic format preservation.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p><i class="far fa-copyright"></i> 2025 PixelResize - Free Image Resizer Tool. Resize images online with ease.</p>
+        <p style="margin-top: 0.5rem;">Privacy Policy | Terms of Use | Contact</p>
+    </div>
+</footer>
+
+<script>
+    // DOM Elements
+    const imageInput = document.getElementById('imageInput');
+    const uploadArea = document.getElementById('uploadArea');
+    const previewSection = document.getElementById('previewSection');
+    const sizeControls = document.getElementById('sizeControls');
+    const originalPreview = document.getElementById('originalPreview');
+    const resizedPreview = document.getElementById('resizedPreview');
+    const originalInfo = document.getElementById('originalInfo');
+    const resizedInfo = document.getElementById('resizedInfo');
+    const downloadBtn = document.getElementById('downloadBtn');
+    
+    // Control elements
+    const percentageSlider = document.getElementById('percentageSlider');
+    const percentageValue = document.getElementById('percentageValue');
+    const percentageControls = document.getElementById('percentageControls');
+    const exactControls = document.getElementById('exactControls');
+    const widthInput = document.getElementById('widthInput');
+    const heightInput = document.getElementById('heightInput');
+    const applyDimensions = document.getElementById('applyDimensions');
+    
+    let currentImageFile = null;
+    let originalImageUrl = null;
+    let originalWidth = 0;
+    let originalHeight = 0;
+    let currentResizeMode = 'percentage'; // 'percentage' or 'exact'
+    let currentPercentage = 100;
+    let targetWidth = null;
+    let targetHeight = null;
+    let resizedBlob = null;
+
+    // Mode switching
+    document.querySelectorAll('.resize-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.resize-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentResizeMode = btn.dataset.mode;
+            if (currentResizeMode === 'percentage') {
+                percentageControls.style.display = 'block';
+                exactControls.style.display = 'none';
+                applyResizeByPercentage();
+            } else {
+                percentageControls.style.display = 'none';
+                exactControls.style.display = 'block';
+                // Initialize dimension inputs with current original values
+                if (originalWidth && originalHeight) {
+                    widthInput.value = originalWidth;
+                    heightInput.value = originalHeight;
+                    targetWidth = originalWidth;
+                    targetHeight = originalHeight;
+                    applyExactResize();
+                }
+            }
+        });
+    });
+
+    // Percentage slider
+    percentageSlider.addEventListener('input', (e) => {
+        currentPercentage = parseInt(e.target.value);
+        percentageValue.textContent = currentPercentage;
+        applyResizeByPercentage();
+    });
+
+    // Preset percentages
+    document.querySelectorAll('.preset[data-percent]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const percent = parseInt(btn.dataset.percent);
+            percentageSlider.value = percent;
+            currentPercentage = percent;
+            percentageValue.textContent = percent;
+            applyResizeByPercentage();
+        });
+    });
+
+    // Exact dimensions apply button
+    applyDimensions.addEventListener('click', () => {
+        let newWidth = parseInt(widthInput.value);
+        let newHeight = parseInt(heightInput.value);
+        if (isNaN(newWidth) || newWidth <= 0) newWidth = originalWidth;
+        if (isNaN(newHeight) || newHeight <= 0) newHeight = originalHeight;
+        
+        // Maintain aspect ratio if only one dimension provided (actually both have values, but we calculate proportionally if both given? We'll keep user values)
+        // Better: if both provided, use both; if only one provided, calculate other keeping aspect ratio
+        if (widthInput.value && !heightInput.value) {
+            newHeight = Math.round((newWidth / originalWidth) * originalHeight);
+            heightInput.value = newHeight;
+        } else if (!widthInput.value && heightInput.value) {
+            newWidth = Math.round((newHeight / originalHeight) * originalWidth);
+            widthInput.value = newWidth;
+        }
+        
+        targetWidth = newWidth;
+        targetHeight = newHeight;
+        applyExactResize();
+    });
+
+    // Preset dimensions
+    document.querySelectorAll('.preset[data-width]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const presetWidth = parseInt(btn.dataset.width);
+            const presetHeight = parseInt(btn.dataset.height);
+            widthInput.value = presetWidth;
+            heightInput.value = presetHeight;
+            targetWidth = presetWidth;
+            targetHeight = presetHeight;
+            
+            // Maintain aspect ratio suggestion (optional: adjust height to maintain ratio)
+            if (originalWidth && originalHeight) {
+                const ratio = originalWidth / originalHeight;
+                const suggestedHeight = Math.round(presetWidth / ratio);
+                heightInput.value = suggestedHeight;
+                targetHeight = suggestedHeight;
+            }
+            applyExactResize();
+        });
+    });
+
+    // Upload handling
+    uploadArea.addEventListener('click', () => imageInput.click());
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#3b82f6';
+        uploadArea.style.background = '#eff6ff';
+    });
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = '#cbd5e1';
+        uploadArea.style.background = '#fafcff';
+    });
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#cbd5e1';
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            handleImageFile(file);
+        } else {
+            alert('Please drop a valid image file (JPEG, PNG, WEBP)');
+        }
+    });
+
+    imageInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+            handleImageFile(e.target.files[0]);
+        }
+    });
+
+    function handleImageFile(file) {
+        if (file.size > 15 * 1024 * 1024) {
+            alert('File too large! Maximum size is 15MB.');
+            return;
+        }
+        currentImageFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            originalImageUrl = e.target.result;
+            originalPreview.src = originalImageUrl;
+            // Wait for image to load to get dimensions
+            const img = new Image();
+            img.onload = () => {
+                originalWidth = img.width;
+                originalHeight = img.height;
+                originalInfo.innerHTML = `${originalWidth} x ${originalHeight} px | ${(currentImageFile.size / 1024).toFixed(1)} KB`;
+                
+                // Show preview and controls
+                previewSection.style.display = 'grid';
+                sizeControls.style.display = 'block';
+                
+                // Initialize resize values
+                if (currentResizeMode === 'percentage') {
+                    percentageSlider.value = 100;
+                    currentPercentage = 100;
+                    percentageValue.textContent = '100';
+                    applyResizeByPercentage();
+                } else {
+                    widthInput.value = originalWidth;
+                    heightInput.value = originalHeight;
+                    targetWidth = originalWidth;
+                    targetHeight = originalHeight;
+                    applyExactResize();
+                }
+                downloadBtn.disabled = false;
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function applyResizeByPercentage() {
+        if (!originalImageUrl || !originalWidth) return;
+        const newWidth = Math.round(originalWidth * (currentPercentage / 100));
+        const newHeight = Math.round(originalHeight * (currentPercentage / 100));
+        targetWidth = newWidth;
+        targetHeight = newHeight;
+        await performResize(newWidth, newHeight);
+    }
+
+    async function applyExactResize() {
+        if (!originalImageUrl || !originalWidth) return;
+        let newWidth = targetWidth || originalWidth;
+        let newHeight = targetHeight || originalHeight;
+        // Ensure positive values
+        newWidth = Math.max(1, newWidth);
+        newHeight = Math.max(1, newHeight);
+        await performResize(newWidth, newHeight);
+    }
+
+    async function performResize(width, height) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Determine output format (preserve PNG transparency, otherwise JPEG)
+                let mimeType = currentImageFile.type;
+                if (mimeType === 'image/png' || mimeType === 'image/webp') {
+                    // keep PNG/WEBP
+                } else {
+                    mimeType = 'image/jpeg';
+                }
+                canvas.toBlob((blob) => {
+                    resizedBlob = blob;
+                    const resizedUrl = URL.createObjectURL(blob);
+                    resizedPreview.src = resizedUrl;
+                    resizedInfo.innerHTML = `${width} x ${height} px | ${(blob.size / 1024).toFixed(1)} KB`;
+                    resolve();
+                }, mimeType, 0.92); // quality for JPEG/WEBP
+            };
+            img.src = originalImageUrl;
+        });
+    }
+
+    // Download resized image
+    downloadBtn.addEventListener('click', () => {
+        if (!resizedBlob) {
+            alert('Please resize the image first.');
+            return;
+        }
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(resizedBlob);
+        link.href = url;
+        let extension = 'jpg';
+        if (currentImageFile.type === 'image/png') extension = 'png';
+        if (currentImageFile.type === 'image/webp') extension = 'webp';
+        link.download = `resized_${targetWidth}x${targetHeight}.${extension}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    });
+
+    // AdSense Integration Helper (for easy insertion of Ad Unit ID)
+    // Designated spaces: adSpace1, adSpace2, adSpace3
+    // To insert AdSense, replace innerHTML of these divs with your AdSense ad code.
+    // Example: document.getElementById('adSpace1').innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXX" data-ad-slot="1234567890"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>';
+    console.log('Ad spaces ready: Replace placeholders with your AdSense ad unit IDs.');
+</script>
+
+<!-- AdSense initialization note: Add your AdSense script (async) in the head or body -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+</body>
+</html>
